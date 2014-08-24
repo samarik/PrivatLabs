@@ -1,4 +1,4 @@
 PrivatLabs
 ==========
 
-Laborotories for Privatbank courses
+Laboratories for Privatbank courses
