@@ -1,9 +1,5 @@
 package com.pb.test.lab3;
 
-/**
- *
- * @author Olga
- */
 class OpDiv implements Operation {
 
     @Override

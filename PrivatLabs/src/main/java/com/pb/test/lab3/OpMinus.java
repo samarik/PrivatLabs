@@ -1,9 +1,5 @@
 package com.pb.test.lab3;
 
-/**
- *
- * @author Olga
- */
 class OpMinus implements Operation {
 
     @Override

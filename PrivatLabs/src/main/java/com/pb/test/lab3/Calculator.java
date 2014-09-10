@@ -1,37 +1,36 @@
 package com.pb.test.lab3;
 
+import com.pb.test.lab3.input.DataInput;
+import com.pb.test.lab3.input.console.ConsoleDataInput;
+import com.pb.test.lab3.output.DataOutput;
+import com.pb.test.lab3.output.console.ConsoleDataOutput;
 import com.pb.test.math.OperationNotFoundException;
 
-/**
- *
- * @author Olga
- */
 public class Calculator {
 
     private MyOpFactory operFact;
-    private DataInput dataInput;
-    //private DataInput dataInput;
+    private DataInput dataInput = new ConsoleDataInput();
+    private DataOutput dataOutput = new ConsoleDataOutput();
 
     Calculator(MyOpFactory opFact) {
         operFact = opFact;
     }
 
-    Calculator() {
-
-    }
-
     void exec() {
-        ConsoleDataInput dataInput = new ConsoleDataInput();
-        ConsoleDataOutput dataOutput = new ConsoleDataOutput();
         while (true) {
             double a, b;
             String op;
             System.out.print("Введите первый аргумент: ");
             try {
                 a = dataInput.getDouble();
-            } catch (Exception e) {
-                System.out.println("Аргумент задан не верно !!!");
-                break; // выход если первый аргумент задан не корректно или не задан (?)
+            } catch (NumberFormatException e) {
+                if (e.getMessage().equalsIgnoreCase("Empty string")) {
+                    System.out.println("Выход !!!");
+                    break;
+                } else {
+                    System.out.println("Аргумент задан неверно !!!");
+                    continue;
+                }
             }
             System.out.print("Введите операцию(+,-,*,/): ");
             op = dataInput.getString();
@@ -39,13 +38,14 @@ public class Calculator {
             try {
                 operation = operFact.getOpInstance(op);
             } catch (OperationNotFoundException e) {
+                System.out.println(e.getMessage());
                 continue;
             }
             System.out.print("Введите второй аргумент: ");
             try {
                 b = dataInput.getDouble();
-            } catch (Exception e) {
-                System.out.println("Аргумент задан не верно !!!");
+            } catch (NumberFormatException e) {
+                System.out.println("Аргумент задан неверно !!!");
                 continue;
             }
             dataOutput.Output(a + op + b + "=" + operation.doOperation(a, b));
