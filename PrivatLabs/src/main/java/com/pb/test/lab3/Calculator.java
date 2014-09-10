@@ -8,8 +8,9 @@ import com.pb.test.math.OperationNotFoundException;
  */
 public class Calculator {
 
-    public MyOpFactory operFact;
-    public static String oper;
+    private MyOpFactory operFact;
+    private DataInput dataInput;
+    //private DataInput dataInput;
 
     Calculator(MyOpFactory opFact) {
         operFact = opFact;
