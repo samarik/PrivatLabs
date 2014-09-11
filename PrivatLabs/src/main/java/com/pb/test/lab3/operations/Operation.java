@@ -1,10 +1,10 @@
-package com.pb.test.lab3;
+package com.pb.test.lab3.operations;
 
 /**
  *
  * @author Olga
  */
-interface Operation {
+public interface Operation {
 
     double doOperation(double a, double b);
 }

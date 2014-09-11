@@ -1,4 +1,6 @@
-package com.pb.test.lab3;
+package com.pb.test.lab3.operations.myoperation;
+
+import com.pb.test.lab3.operations.Operation;
 
 /**
  *
