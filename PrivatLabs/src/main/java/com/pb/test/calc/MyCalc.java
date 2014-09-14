@@ -13,13 +13,13 @@ public class MyCalc {
                 break;
             }
             op = iodt.userInput("Введите операцию(+,-,*,/): ");
-            if (!op.equals("*") && !op.equals("/") && !op.equals("-") && !op.equals("+")) {
+            if (!"+-*/".contains(op)) {
                 System.out.println("Не верно задана операция !!!");
                 continue;
             }
             b = iodt.userInput("Введите второй аргумент: ");
             Operation operation = new Operation();
-            System.out.println(a + op + b + "=" + operation.oper(a, op, b));
+            System.out.println(a + op + b + " = " + operation.oper(a, op, b));
 
         }
     }
