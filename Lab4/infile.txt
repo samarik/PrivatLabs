@@ -1,0 +1,7 @@
+lab4.Service serviceMethod1 1111
+lab4.Service1 serviceMethod1 1111 333
+lab4.Service2 serviceMethod1 1111 222 3 5
+lab4.Service1 serviceMethod 2222
+lab4.Service1 serviceMethod1 3333
+lab4.Service1 serviceMethod1 4444
+lab4.Service2 serviceMethod1 1111 222 3

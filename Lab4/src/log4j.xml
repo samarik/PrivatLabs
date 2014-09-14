@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+
+     <appender name="SHEDULERS_LOGGER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="logs/pp/shedulers.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p %C %d{HH:mm:ss,SSS}: %m%n"/>
+        </layout>
+    </appender>
+
+
+
+ 
+ <logger name="example.HelloWorld" additivity="false">
+   <level value="debug" />
+   <appender-ref ref="SHEDULERS_LOGGER" />
+ </logger>
+
+<root>
+  <priority value="info" />
+  <appender-ref ref="SHEDULERS_LOGGER" />
+ </root>
+ 
+
+</log4j:configuration>
