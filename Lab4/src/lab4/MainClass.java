@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +34,10 @@ public class MainClass {
                     saveResult(invokeService(string));
                 } catch (ClassNotFoundException e) {
                     LOG.error("Class not found", e);
-                }
-                catch (NoSuchMethodException e) {
-                    LOG.error("Method not found", e); 
+                } catch (NoSuchMethodException e) {
+                    LOG.error("Method not found", e);
+                } finally {
+                    LOG.info("The end of the processing line");
                 }
             }
         } catch (FileNotFoundException e) {
@@ -47,6 +49,7 @@ public class MainClass {
     }
 
     public static String invokeService(String strFromFile) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+        LOG.info("Start processing line");
         String[] str = strFromFile.split(" ");
         String className = str[0];
         String methodName = str[1];
@@ -60,6 +63,7 @@ public class MainClass {
         Class c = Class.forName(className);
         Object obj = c.newInstance();
         Method myMethod = c.getMethod(methodName, argsClasses);
+        LOG.debug(className + " " + methodName + " " + Arrays.toString(args));
         String result = (String) myMethod.invoke(obj, args);
         return result;
     }

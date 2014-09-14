@@ -16,7 +16,7 @@
 
 
  
- <logger name="example.HelloWorld" additivity="false">
+ <logger name="lab4.MainClass" additivity="false">
    <level value="debug" />
    <appender-ref ref="SHEDULERS_LOGGER" />
  </logger>
