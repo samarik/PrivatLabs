@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pb.test.lab6;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -16,8 +9,8 @@ import java.util.logging.Logger;
 public class RunnableOutputDataQueue implements Runnable {
 
     private final BlockingQueue queue;
-    static private int counter = 0;
-    static private int counter1 = 0;
+    volatile static private int counter = 0;
+    volatile static private int counter1 = 0;
 
     public RunnableOutputDataQueue(BlockingQueue queue) {
         this.queue = queue;
@@ -30,27 +23,28 @@ public class RunnableOutputDataQueue implements Runnable {
             String str2 = "22222";
             String str3 = "33333";
             System.out.println(str1 + " В контейнер помещает поток " + Thread.currentThread().getName());
+            counter = ++counter;
             queue.put(str1);
             Thread.sleep(100);
-            while (counter != 9) {
-                counter = ++counter;
+            
+            if (counter < 10) {
                 this.wait();
-
             }
-            this.notifyAll();
+            this.notify();
             System.out.println(str2 + " В контейнер помещает поток " + Thread.currentThread().getName());
             queue.put(str2);
+            counter1 = ++counter1;
             Thread.sleep(100);
-            while (counter1 != 9) {
-                counter1 = ++counter1;
+            
+            if (counter1 < 10) {
                 this.wait();
             }
-            this.notifyAll();
+            
+            this.notify();
             System.out.println(str3 + " В контейнер помещает поток " + Thread.currentThread().getName());
             queue.put(str3);
             Thread.sleep(100);
         } catch (InterruptedException ex) {
-            Logger.getLogger(RunnableOutputPiecesData.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

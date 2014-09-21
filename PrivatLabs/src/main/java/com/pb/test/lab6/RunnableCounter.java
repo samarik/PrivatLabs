@@ -5,6 +5,9 @@
  */
 package com.pb.test.lab6;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Olga
@@ -13,15 +16,17 @@ public class RunnableCounter implements Runnable {
 
     private int counter = 0;
 
-    public int getCounter() {
-        return counter;
-    }
-
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             counter++;  
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                break;
+            }
         }
+        System.out.println(Thread.currentThread().getName() + " stoped. Counter is - " + counter);
     }
 
 }
