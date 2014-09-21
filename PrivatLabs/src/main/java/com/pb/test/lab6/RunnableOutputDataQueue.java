@@ -17,6 +17,7 @@ public class RunnableOutputDataQueue implements Runnable {
 
     private final BlockingQueue queue;
     static private int counter = 0;
+    static private int counter1 = 0;
 
     public RunnableOutputDataQueue(BlockingQueue queue) {
         this.queue = queue;
@@ -25,32 +26,27 @@ public class RunnableOutputDataQueue implements Runnable {
     @Override
     public synchronized void run() {
         try {
-            String str1="11111";
-            String str2="22222";
-            String str3="33333";
-            System.out.println(str1+" В контейнер помещает поток "+Thread.currentThread().getName());
+            String str1 = "11111";
+            String str2 = "22222";
+            String str3 = "33333";
+            System.out.println(str1 + " В контейнер помещает поток " + Thread.currentThread().getName());
             queue.put(str1);
             Thread.sleep(100);
-            if (counter != 9) {
+            while (counter != 9) {
                 counter = ++counter;
                 this.wait();
 
-            } else {
-                counter = 0;
-                this.notifyAll();
             }
-            System.out.println(str2+" В контейнер помещает поток "+Thread.currentThread().getName());
+            this.notifyAll();
+            System.out.println(str2 + " В контейнер помещает поток " + Thread.currentThread().getName());
             queue.put(str2);
             Thread.sleep(100);
-            if (counter != 9) {
-                counter = ++counter;
+            while (counter1 != 9) {
+                counter1 = ++counter1;
                 this.wait();
-
-            } else {
-                counter = 0;
-                this.notifyAll();
             }
-            System.out.println(str3+" В контейнер помещает поток "+Thread.currentThread().getName());
+            this.notifyAll();
+            System.out.println(str3 + " В контейнер помещает поток " + Thread.currentThread().getName());
             queue.put(str3);
             Thread.sleep(100);
         } catch (InterruptedException ex) {
