@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Комментарий</comment>
+<entry key="key2">value2
+multi</entry>
+<entry key="param">val</entry>
+</properties>
+
