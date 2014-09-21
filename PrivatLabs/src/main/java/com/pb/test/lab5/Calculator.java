@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Calculator {
 
@@ -76,7 +78,11 @@ public class Calculator {
                 continue;
             }
 
-            dataOutput.outputWithFormatting(a, b, op, operation.doOperation(a, b));
+            try {
+                dataOutput.outputWithFormatting(a, b, op, operation.doOperation(a, b));
+            } catch (IOException ex) {
+                System.out.println("");
+            }
 
         }
 
