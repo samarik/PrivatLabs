@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class MyOpFactoryHashMap implements OperationFactory {
 
-    HashMap<String, Operation> map = new HashMap<String, Operation>();
+    private HashMap<String, Operation> map = new HashMap<String, Operation>();
 
     @Override
     public Operation getOpInstance(String op) throws OperationNotFoundException {
