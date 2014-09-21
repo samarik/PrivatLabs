@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pb.test.lab5;
 
 //import com.pb.test.lab5.opfactory.myopfacrory.MyOpFactory;
-import com.pb.test.lab5.opfactory.myopfacrory.MyOpFactoryHashMap;
+import com.pb.test.lab5.opfactory.OperationFactory;
+import com.pb.test.lab5.opfactory.holder.MyOpFactoryHashMap;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,12 +12,12 @@ import java.util.logging.Logger;
 public class MyCalc {
 
     public static void main(String[] args) {
-        MyOpFactoryHashMap opFact = new MyOpFactoryHashMap();
-        Calculator calc=null;
+        OperationFactory opFact = new MyOpFactoryHashMap();
+        Calculator calc = null;
         try {
-            calc = new Calculator(opFact,"infile.txt");
+            calc = new Calculator(opFact, "src/main/resources/infile.txt");
         } catch (FileNotFoundException ex) {
-            System.out.println("Входной файл не найден !!!");
+            System.out.println("File not found !!!");
             return;
         }
         calc.exec();

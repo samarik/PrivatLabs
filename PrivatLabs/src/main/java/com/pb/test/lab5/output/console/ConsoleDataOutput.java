@@ -5,8 +5,13 @@ import com.pb.test.lab5.output.DataOutput;
 public class ConsoleDataOutput implements DataOutput {
 
     @Override
-    public void Output(String outLine) {
+    public void output(String outLine) {
         System.out.println(outLine);
+    }
+
+    @Override
+    public void outputWithFormatting(double firstArg, double secondArg, String operation, double result) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

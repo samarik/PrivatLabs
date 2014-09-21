@@ -1,4 +1,4 @@
-package com.pb.test.lab5.opfactory.myopfacrory;
+package com.pb.test.lab5.opfactory.holder;
 
 import com.pb.test.lab5.operations.Operation;
 import com.pb.test.lab5.operations.myoperation.OpDiv;
@@ -8,6 +8,7 @@ import com.pb.test.lab5.operations.myoperation.OpPlus;
 import com.pb.test.lab5.opfactory.OperationFactory;
 import com.pb.test.math.OperationNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.HashMap;
  */
 public class MyOpFactoryHashMap implements OperationFactory {
 
-    private HashMap<String, Operation> map = new HashMap<String, Operation>();
+    private final Map<String, Operation> operationHolder = new HashMap<>();
 
     @Override
     public Operation getOpInstance(String op) throws OperationNotFoundException {
-        if (map.containsKey(op)) {
-            return map.get(op);
+        if (operationHolder.containsKey(op)) {
+            return operationHolder.get(op);
         }
         Operation myOperation;
         switch (op) {
@@ -39,7 +40,7 @@ public class MyOpFactoryHashMap implements OperationFactory {
             default:
                 throw new OperationNotFoundException("Код операции задан неверно !!!  " + op);
         }
-        map.put(op, myOperation);
+        operationHolder.put(op, myOperation);
         return myOperation;
     }
 }

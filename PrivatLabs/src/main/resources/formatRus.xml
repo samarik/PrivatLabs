@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Русский формат</comment>
+<entry key="+">'СУММА'</entry>
+<entry key="*">'УМНОЖЕНИЕ'</entry>
+<entry key="message">Результат операции {0} двух аргументов {1, number} и {2, number} равен {3}.</entry>
+<entry key="/">'ДЕЛЕНИЕ'</entry>
+<entry key="-">'РАЗНОСТЬ'</entry>
+</properties>

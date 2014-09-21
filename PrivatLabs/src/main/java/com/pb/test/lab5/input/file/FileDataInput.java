@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pb.test.lab5.input.console;
+package com.pb.test.lab5.input.file;
 
 import com.pb.test.lab5.input.DataInput;
 import java.io.BufferedReader;

@@ -1,11 +1,12 @@
 package com.pb.test.lab5;
 
 import com.pb.test.lab5.input.DataInput;
-import com.pb.test.lab5.input.console.FileDataInput;
+import com.pb.test.lab5.input.console.ConsoleDataInput;
+import com.pb.test.lab5.input.file.FileDataInput;
 import com.pb.test.lab5.operations.Operation;
 import com.pb.test.lab5.opfactory.OperationFactory;
 import com.pb.test.lab5.output.DataOutput;
-import com.pb.test.lab5.output.console.FileDataOutput;
+import com.pb.test.lab5.output.file.FileDataOutput;
 import com.pb.test.math.OperationNotFoundException;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -23,21 +24,19 @@ public class Calculator {
     private DataInput dataInput;
     private DataOutput dataOutput = new FileDataOutput();
 
-    Calculator(OperationFactory opFact,String fileName) throws FileNotFoundException {
+    Calculator(OperationFactory opFact, String fileName) throws FileNotFoundException {
         dataInput = new FileDataInput(fileName);
         operFact = opFact;
     }
+
     Calculator(OperationFactory opFact) {
+        dataInput = new ConsoleDataInput();
         operFact = opFact;
     }
 
     void exec() {
         double a, b;
         String op;
-        /*Properties properties = new Properties();
-         FileInputStream fis = new FileInputStream("property.xml")) {
-         properties.loadFromXML(fis);
-         System.out.println(properties.getProperty("param"));*/
         String str;
         while ((str = dataInput.getString()) != null) {
             StringTokenizer strTokeniser = new StringTokenizer(str, " ", false);
@@ -77,7 +76,7 @@ public class Calculator {
                 continue;
             }
 
-            dataOutput.Output(a + op + b + "=" + operation.doOperation(a, b));
+            dataOutput.outputWithFormatting(a, b, op, operation.doOperation(a, b));
 
         }
 
