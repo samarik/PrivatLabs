@@ -34,8 +34,8 @@ public class FileDataOutput implements DataOutput {
     }
 
     @Override
-    public void outputWithFormatting(double firstArg, double secondArg, String operation, double result) {
-        try {
+    public void outputWithFormatting(double firstArg, double secondArg, String operation, double result) throws IOException {
+
             Properties prop = new Properties();
             prop.loadFromXML(new FileInputStream("src/main/resources/formatRus.xml"));
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("outfile.txt", true))) {
@@ -46,8 +46,5 @@ public class FileDataOutput implements DataOutput {
             } catch (IOException e) {
                 System.out.println("Ошибка при записи результата запуска в исходящий файл !!!");
             }
-        } catch (IOException ex) {
-            System.out.println("Ошибка при чтении файла!!!");
-        }
     }
 }
