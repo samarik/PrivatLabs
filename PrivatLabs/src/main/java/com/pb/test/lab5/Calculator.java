@@ -81,7 +81,7 @@ public class Calculator {
             try {
                 dataOutput.outputWithFormatting(a, b, op, operation.doOperation(a, b));
             } catch (IOException ex) {
-                System.out.println("");
+                System.out.println("Ошибка при чтении формата из файла formatRus.xml");
             }
 
         }
