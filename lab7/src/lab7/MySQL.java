@@ -25,11 +25,11 @@ public class MySQL {
 
     }
 
-    public String getSQL() throws SQLException {
+    public String getSQL() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите SQL: ");
-        String sql = "";
+        String sql = "";  // замечание нужно было использовать StringBuilder
         String read;
         int j = 1;
         do {
@@ -50,33 +50,35 @@ public class MySQL {
         while (true) {
             int rowCount = st.getUpdateCount();
             if (rowCount > 0) {
-                System.out.println("Rows changed = " + rowCount);
-                //st.getResultSet();
+                System.out.println("Кол-во измененных строк = " + rowCount);
                 st.getMoreResults();
                 continue;
             }
             if (rowCount == 0) {
-                System.out.println(" No rows changed or statement was DDL command");
+                System.out.println("Нет измененных строк");
                 st.getMoreResults();
                 continue;
             }
-
             ResultSet rs = st.getResultSet();
             if (rs != null) {
                 ResultSetMetaData m = rs.getMetaData();
                 for (int i = 1; i <= m.getColumnCount(); i++) {
-
                     printFormatedString(m.getColumnLabel(i), m.getColumnDisplaySize(i));
                 }
                 System.out.println();
+                int countStr = 0;
                 while (rs.next()) {
                     for (int i = 1; i <= m.getColumnCount(); i++) {
                         printFormatedString(rs.getString(i), m.getColumnDisplaySize(i));
                     }
                     System.out.println();
+                    countStr = ++countStr;
                 }
-//                continue;
+                System.out.println("Количество обработанных строк " + countStr);
+                st.getMoreResults();
+                continue;
             }
+
             break;
         }
 

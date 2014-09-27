@@ -1,12 +1,9 @@
 package lab7;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,7 +14,7 @@ public class JDBC_main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Параметры для коннекта не заданы !!! ");
             return;
@@ -28,15 +25,27 @@ public class JDBC_main {
         if (args.length > 2) {
             password = args[2];
         }
-        ConnectionFactory sybaseConnection = new sybaseConnectionFactory();
-        Connection conn = sybaseConnection.doConnection(url, login, password);
+        ConnectionFactory connFact = new SybaseConnectionFactory();
+        Connection conn = connFact.doConnection(url, login, password);
         MySQL mySQL = new MySQL(conn);
         while (true) {
-            String sql = mySQL.getSQL();
+            String sql = null;
+            sql = mySQL.getSQL();
             if (sql.contains("exit")) {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(JDBC_main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 break;
             }
-            mySQL.executeSQL(sql);
+            try {
+                mySQL.executeSQL(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBC_main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

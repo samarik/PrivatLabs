@@ -13,5 +13,5 @@ import java.sql.Connection;
  */
 public interface ConnectionFactory {
 
-    public Connection doConnection (String url, String login,String password);
+    public Connection doConnection(String url, String login, String password);
 }
