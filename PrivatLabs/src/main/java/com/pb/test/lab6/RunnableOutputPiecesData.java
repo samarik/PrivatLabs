@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class RunnableOutputPiecesData implements Runnable {
 
     static private int counter = 0;
+    static private int counter1 = 0;
 
     @Override
     public synchronized void run() {
@@ -23,25 +24,27 @@ public class RunnableOutputPiecesData implements Runnable {
 
             System.out.println("11111");
             Thread.sleep(100);
-            if (counter != 9) {
-                counter = ++counter;
+            counter = ++counter;
+            if (counter < 10) {
+                System.out.println("1 раз ложится спать поток " + Thread.currentThread().getName());
                 this.wait();
 
             } else {
-                counter = 0;
+                System.out.println("все проснулись и ждут своей очереди " + Thread.currentThread().getName());
                 this.notifyAll();
             }
-            System.out.println("22222");
+            System.out.println("22222 " + Thread.currentThread().getName());
             Thread.sleep(100);
-            if (counter != 9) {
-                counter = ++counter;
+            counter1 = ++counter1;
+            if (counter1 < 10) {
+                System.out.println("2 ложится спать поток " + Thread.currentThread().getName());
                 this.wait();
 
             } else {
-                counter = 0;
+                System.out.println("2все проснулись и ждут своей очереди " + Thread.currentThread().getName());
                 this.notifyAll();
             }
-            System.out.println("33333");
+            System.out.println("33333 " + Thread.currentThread().getName());
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(RunnableOutputPiecesData.class.getName()).log(Level.SEVERE, null, ex);

@@ -11,9 +11,12 @@ class RunnableOutput implements Runnable {
     }
 
     public void run() {
+        String str;
         while (true) {
             try {
-                System.out.println(queue.take() + " достаем из контейнера");
+                str=(String)(queue.take());
+                if (str.equals("end")) break;
+                System.out.println(str + " достаем из контейнера");
             } catch (InterruptedException ex) {
             }
         }
