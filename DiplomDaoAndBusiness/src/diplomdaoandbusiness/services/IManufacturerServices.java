@@ -12,11 +12,13 @@ import java.util.List;
  *
  * @author Olga
  */
-public interface IManufactererServices {
+public interface IManufacturerServices {
 
     List<Manufacturer> list();
 
-    void add(Manufacturer user);
+    void add(Manufacturer manufacturer);
 
     void delete(int manufacturerId);
+
+    void modify(Manufacturer manufacturer);
 }

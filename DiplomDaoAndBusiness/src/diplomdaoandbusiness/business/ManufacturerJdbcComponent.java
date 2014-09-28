@@ -42,12 +42,17 @@ public class ManufacturerJdbcComponent implements IManufacturerServices{
     }
 
     @Override
-    public void add(Manufacturer user) {
+    public void add(Manufacturer manufacturer) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void delete(int manufacturerId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void modify(Manufacturer manufacturer) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
