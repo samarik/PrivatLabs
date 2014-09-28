@@ -7,19 +7,16 @@ package diplomdaoandbusiness.swingClient;
 
 //import com.sun.glass.events.KeyEvent;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.beans.PropertyVetoException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -27,92 +24,60 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 
 public class MainFrame extends JFrame {
     
-    public static final MainFrame mainFrame = new MainFrame();
+ 
+    private JDesktopPane desktop = new JDesktopPane();
+    private JMenuBar menuBar = new JMenuBar();
+    private Map<String, JInternalFrame> frameMap = new HashMap<>();
 
-    //private final ImageIcon icon = new ImageIcon(this.getClass().getResource("/resources/Frog-32.png"));
-    private JInternalFrame internalFrame = null;
-    private final JDesktopPane desktopPane = new JDesktopPane();
-
-    public MainFrame() throws HeadlessException {
-        super("Витрина_админимтратор");
-        setResizable(false);
-        //setIconImage(icon.getImage());
-        setSize(new Dimension(800, 600));
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
-        Container c = getContentPane();
-        c.setLayout(new BorderLayout());
-        c.add(desktopPane);
-        
-        addWindowListener(new WindowAdapter() {
-
+    
+    
+    public MainFrame() {
+        super("Витрина(администратор)");
+        JMenu mainMenu = new JMenu("Главное");
+        JMenuItem usersMenu = new JMenuItem("Производители");
+        usersMenu.addActionListener(new ActionListener() {
             @Override
-            public void windowClosing(WindowEvent e) {
-                if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(MainFrame.this, "Вы уверены?", "Внимание!!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
-                    dispose();
+            public void actionPerformed(ActionEvent e) {
+                String ref = "ManufacturerFrame";
+                JInternalFrame f = frameMap.get(ref);
+                if (f == null) {
+                    f = new ManufacturerFrame();
+                    desktop.add(f);
+                    frameMap.put(ref, f);
+                    f.addInternalFrameListener(new CommonInternalFrameListener(frameMap, ref));
+                    try {
+                        f.setMaximum(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                f.setVisible(true);
             }
-
         });
        
-        creatMenu();
+        mainMenu.add(usersMenu);
+        JMenuItem closeMenu = new JMenuItem("Закрыть");
+        closeMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.dispose();
+            }
+        });
         
-        //addWindow();
-    }
-
-    private void creatMenu() {
-
-        JMenuBar menuBar = new JMenuBar();
+        mainMenu.add(closeMenu);
+        menuBar.add(mainMenu);
         setJMenuBar(menuBar);
-
-        JMenu menu = new JMenu("Файл");
-        menuBar.add(menu);
-        AbstractAction newWindowAction = new AbstractAction("Производители") {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-addWindow();
-            }
-        };
-        //newWindowAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.MODIFIER_ALT));
-
-        JMenuItem newWindow = new JMenuItem(newWindowAction);
-        menu.add(newWindow);
-
-        AbstractAction exitAction = new AbstractAction("Выход") {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        };
-        //exitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.MODIFIER_ALT));
-        JMenuItem exit = new JMenuItem(exitAction);
-        menu.add(exitAction);
-
+        setSize(new Dimension(800, 600));
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(desktop, BorderLayout.CENTER);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void addWindow() {
-        if (internalFrame == null) {
-            internalFrame = new MyInternalFrame();
-            internalFrame.setSize(new Dimension(400, 300));
-            desktopPane.add(internalFrame);
-        }
-        internalFrame.setVisible(true);
-
-        try {
-            internalFrame.setSelected(true);
-            internalFrame.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-
+    
 }
+
