@@ -26,16 +26,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-
 public class MainFrame extends JFrame {
-    
- 
+
     private JDesktopPane desktop = new JDesktopPane();
     private JMenuBar menuBar = new JMenuBar();
     private Map<String, JInternalFrame> frameMap = new HashMap<>();
 
-    
-    
     public MainFrame() {
         super("Витрина(администратор)");
         JMenu mainMenu = new JMenu("Главное");
@@ -59,7 +55,7 @@ public class MainFrame extends JFrame {
                 f.setVisible(true);
             }
         });
-       
+
         mainMenu.add(usersMenu);
         JMenuItem closeMenu = new JMenuItem("Закрыть");
         closeMenu.addActionListener(new ActionListener() {
@@ -68,7 +64,7 @@ public class MainFrame extends JFrame {
                 MainFrame.this.dispose();
             }
         });
-        
+
         mainMenu.add(closeMenu);
         menuBar.add(mainMenu);
         setJMenuBar(menuBar);
@@ -78,6 +74,4 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    
 }
-

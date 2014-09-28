@@ -28,7 +28,7 @@ public class ManufacturerFrame extends JInternalFrame {
     private IManufacturerServices manufacturerService = AppConfig.getServiceFactory().getManufacturerService();
 
     public ManufacturerFrame() {
-        super("Управление справочником производителм", true, true, true, true);
+        super("Управление справочником производители", true, true, true, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(new Dimension(400, 300));
         setLayout(new BorderLayout());

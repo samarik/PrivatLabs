@@ -2,6 +2,7 @@ package diplomdaoandbusiness.business;
 
 import diplomdaoandbusiness.beans.entities.Category;
 import diplomdaoandbusiness.dao.CategoryDao;
+import diplomdaoandbusiness.services.ICategoryServices;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
