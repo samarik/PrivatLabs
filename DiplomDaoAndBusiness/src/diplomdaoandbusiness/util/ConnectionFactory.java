@@ -4,15 +4,17 @@ package diplomdaoandbusiness.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import javax.sql.ConnectionPoolDataSource;
 
 
 public class ConnectionFactory implements IConnectionFactory{
     private DataSource ds = null;
 
     public ConnectionFactory() {
-        //SybDataSource dataSource = new SybDataSource();
-        //ds.setCreateDatabase("create");
-        //ds.setDatabaseName("db");
+        ConnectionPoolDataSource ds = new ConnectionPoolDataSource() {};
+        ds.setCreateDatabase("create");
+        ds.setDatabaseName("db");
+        this.ds = ds;
         this.ds = ds;
     }
     
