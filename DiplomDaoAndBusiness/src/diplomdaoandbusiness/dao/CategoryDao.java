@@ -1,6 +1,8 @@
 package diplomdaoandbusiness.dao;
 
 import diplomdaoandbusiness.beans.entities.Category;
+import diplomdaoandbusiness.util.DaoConfig;
+import diplomdaoandbusiness.util.IConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

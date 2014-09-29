@@ -6,6 +6,8 @@
 
 package diplomdaoandbusiness.swingClient;
 
+import java.awt.EventQueue;
+
 
 /**
  *
@@ -17,7 +19,13 @@ public class MainSwingClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new MainFrame().setVisible(true);
+      AppConfig.init(new MainFrame());
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                AppConfig.getMainFrame().setVisible(true);
+            }
+        });
     }
-    
 }
+

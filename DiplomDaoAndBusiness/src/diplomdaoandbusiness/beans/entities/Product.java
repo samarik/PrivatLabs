@@ -16,7 +16,7 @@ public class Product extends CustomBean<Integer> implements Serializable {
     private BigDecimal price;
     private String description;
     private Image image;
-    private char flSkl;
+    private boolean flSkl;
 
     public int getIdManuf() {
         return idManuf;
@@ -58,11 +58,11 @@ public class Product extends CustomBean<Integer> implements Serializable {
         this.image = image;
     }
 
-    public char getFlSkl() {
+    public boolean getFlSkl() {
         return flSkl;
     }
 
-    public void setFlSkl(char flSkl) {
+    public void setFlSkl(boolean flSkl) {
         this.flSkl = flSkl;
     }
 

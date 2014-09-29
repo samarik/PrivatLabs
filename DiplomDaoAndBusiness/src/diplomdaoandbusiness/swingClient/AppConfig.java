@@ -10,20 +10,14 @@ import javax.swing.JFrame;
 
 
 public class AppConfig {
-    private static IServiceFactory serviceFactory = null;
     private static JFrame mainFrame = null;
     private static LoadDlg loadDlg = null;
     
-    public static void init(JFrame frame, IServiceFactory iServiceFactory){
-        serviceFactory = iServiceFactory;
+    public static void init(JFrame frame){
         mainFrame = frame;
         loadDlg = new LoadDlg(mainFrame);
     }
     
-    public static IServiceFactory getServiceFactory(){
-        return serviceFactory;
-    }
-
     public static JFrame getMainFrame() {
         return mainFrame;
     }

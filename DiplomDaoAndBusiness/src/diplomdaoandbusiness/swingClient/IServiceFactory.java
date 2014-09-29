@@ -4,10 +4,12 @@
  */
 package diplomdaoandbusiness.swingClient;
 
+import diplomdaoandbusiness.services.ICategoryServices;
 import diplomdaoandbusiness.services.IManufacturerServices;
 import diplomdaoandbusiness.services.IProductServices;
 
 public interface IServiceFactory {
     public IManufacturerServices getManufacturerService();
     public IProductServices getProductService();
+    public ICategoryServices getCategoryService();
 }

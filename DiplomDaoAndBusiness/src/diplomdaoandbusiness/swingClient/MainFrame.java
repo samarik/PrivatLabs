@@ -6,6 +6,9 @@
 package diplomdaoandbusiness.swingClient;
 
 //import com.sun.glass.events.KeyEvent;
+import diplomdaoandbusiness.swingClient.frame.CategoryFrame;
+import diplomdaoandbusiness.swingClient.frame.ManufacturerFrame;
+import diplomdaoandbusiness.swingClient.frame.ProductFrame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -33,10 +36,10 @@ public class MainFrame extends JFrame {
     private Map<String, JInternalFrame> frameMap = new HashMap<>();
 
     public MainFrame() {
-        super("Витрина(администратор)");
+        super("Витрина магазина(АДМИНИСТРАТОР)");
         JMenu mainMenu = new JMenu("Главное");
-        JMenuItem usersMenu = new JMenuItem("Производители");
-        usersMenu.addActionListener(new ActionListener() {
+        JMenuItem manufacturerMenu = new JMenuItem("Производители");
+        manufacturerMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String ref = "ManufacturerFrame";
@@ -55,8 +58,49 @@ public class MainFrame extends JFrame {
                 f.setVisible(true);
             }
         });
-
-        mainMenu.add(usersMenu);
+        mainMenu.add(manufacturerMenu);
+        JMenuItem categoryMenu = new JMenuItem("Категории");
+        categoryMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ref = "CategoryFrame";
+                JInternalFrame f = frameMap.get(ref);
+                if (f == null) {
+                    f = new CategoryFrame();
+                    desktop.add(f);
+                    frameMap.put(ref, f);
+                    f.addInternalFrameListener(new CommonInternalFrameListener(frameMap, ref));
+                    try {
+                        f.setMaximum(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                f.setVisible(true);
+            }
+        });
+        mainMenu.add(categoryMenu);
+        JMenuItem productMenu = new JMenuItem("Товары");
+        productMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ref = "ProductFrame";
+                JInternalFrame f = frameMap.get(ref);
+                if (f == null) {
+                    f = new ProductFrame();
+                    desktop.add(f);
+                    frameMap.put(ref, f);
+                    f.addInternalFrameListener(new CommonInternalFrameListener(frameMap, ref));
+                    try {
+                        f.setMaximum(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                f.setVisible(true);
+            }
+        });
+        mainMenu.add(productMenu);
         JMenuItem closeMenu = new JMenuItem("Закрыть");
         closeMenu.addActionListener(new ActionListener() {
             @Override
@@ -64,7 +108,6 @@ public class MainFrame extends JFrame {
                 MainFrame.this.dispose();
             }
         });
-
         mainMenu.add(closeMenu);
         menuBar.add(mainMenu);
         setJMenuBar(menuBar);
