@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package diplomdaoandbusiness.swingClient.frame;
 
 import diplomdaoandbusiness.beans.entities.Category;
-import diplomdaoandbusiness.services.ICategoryServices;
+import diplomdaoandbusiness.dao.CategoryDao;
 import diplomdaoandbusiness.swingClient.AppConfig;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -28,7 +24,10 @@ public class CategoryEdit extends JDialog {
     private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(CategoryEdit.class);
     private JLabel nameLabel = new JLabel("Наименование", SwingConstants.LEFT);
     private JTextField nameField = new JTextField();
+    private JLabel nameLabel1 = new JLabel("Описание", SwingConstants.LEFT);
+    private JTextField nameField1 = new JTextField();
     private Category category = null;
+    CategoryDao categoryDao = new CategoryDao();
     private boolean saved = false;
 
     public CategoryEdit() {
@@ -38,14 +37,19 @@ public class CategoryEdit extends JDialog {
 
     }
 
-    public CategoryEdit(Category category) {
+    public CategoryEdit(Category cat) throws SQLException {
         super(AppConfig.getMainFrame(), true);
-        AppConfig.doJob(new Runnable() {
-            @Override
-            public void run() {
-                //manufacturer = manufacturerService.getInfo(manufacturer.getId());
-            }
-        });
+        category = categoryDao.getCategoryInfo(cat.getId());
+//        AppConfig.doJob(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(ProductEdit.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
         String caption = "Редактирование категории [" + category.getId() + "] " + category.getName();
         init(caption);
     }
@@ -64,9 +68,11 @@ public class CategoryEdit extends JDialog {
         c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
         c.add(nameLabel);
         c.add(nameField);
-
+        c.add(nameLabel1);
+        c.add(nameField1);
         if (category != null) {
             nameField.setText(category.getName());
+            nameField1.setText(category.getDescription());
             System.out.println("" + category);
 
         }
@@ -91,10 +97,11 @@ public class CategoryEdit extends JDialog {
                                 c = new Category();
                             }
                             c.setName(nameField.getText());
+                            c.setDescription(nameField1.getText());
                             if (category == null) {
-//                                categoryService.add(c);
+                                categoryDao.addCategory(c);
                             } else {
-//                                categoryService.modify(c);
+                                categoryDao.modifyCategory(c);
                             }
                             category = c;
                             saved = true;

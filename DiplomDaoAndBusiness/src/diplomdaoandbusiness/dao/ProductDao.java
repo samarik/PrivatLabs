@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class ProductDao {
 
-    private IConnectionFactory connectionFactory = DaoConfig.getConnectionFactory();
+    private final IConnectionFactory connectionFactory = DaoConfig.getConnectionFactory();
 
     public List<Product> list() {
         List<Product> list = new ArrayList<>();
@@ -64,18 +64,17 @@ public class ProductDao {
                     Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
         }
         return list;
     }
-    
-     public Product getProductInfo(int productId) throws SQLException{
+
+    public Product getProductInfo(int productId) throws SQLException {
         Connection con = connectionFactory.getDefaultConnection();
         PreparedStatement ps = con.prepareStatement("Select MANUF_OKPO, CATEG_ACC, PROD_NAME,PROD_PRICE, PROD_DESCR, PROD_FLSKL From Product where PROD_ACC = ?");
         ps.setInt(1, productId);
         ResultSet rs = ps.executeQuery();
         Product ret = null;
-        if(rs.next()){
+        if (rs.next()) {
             ret = new Product();
             ret.setId(productId);
             ret.setIdManuf(rs.getInt("MANUF_OKPO"));
@@ -84,7 +83,7 @@ public class ProductDao {
             ret.setPrice(rs.getBigDecimal("PROD_PRICE"));
             ret.setDescription(rs.getString("PROD_DESCR"));
         }
-        
+
         rs.close();
         ps.close();
         return ret;
@@ -104,22 +103,19 @@ public class ProductDao {
 
     public void addProduct(Product product) throws SQLException {
         Connection con = connectionFactory.getDefaultConnection();
-        //PreparedStatement ps = con.prepareStatement("insert into Product(PROD_ACC , MANUF_OKPO , CATEG_ACC, PROD_NAME, PROD_PRICE, PROD_DESCR, PROD_IMG, PROD_FLSKL) values(?,?,?,?,?,?,?,?)");
-        PreparedStatement ps = con.prepareStatement("insert into Product(PROD_ACC , MANUF_OKPO , CATEG_ACC, PROD_NAME, PROD_PRICE, PROD_FLSKL) values(?,?,?,?,?,?)");
+        PreparedStatement ps = con.prepareStatement("insert into Product(PROD_ACC , MANUF_OKPO , CATEG_ACC, PROD_NAME, PROD_PRICE, PROD_DESCR, PROD_FLSKL) values(?,?,?,?,?,?,?)");
         int i = 1;
-        product.setIdManuf(1234567);
-        product.setIdCateg(1);
-        product.setPrice(BigDecimal.ZERO);
         product.setFlSkl(true);
-        ps.setInt(i++, getNextId());
+        product.setId(getNextId());
+        ps.setInt(i++, product.getId());
         ps.setInt(i++, product.getIdManuf());
         ps.setInt(i++, product.getIdCateg());
         ps.setString(i++, product.getName());
+        System.out.println(product.getPrice());
         ps.setBigDecimal(i++, product.getPrice());
-        //ps.setString(i++, product.getDescription());
-        //ps.setObject(i++, null);
+        ps.setString(i++, product.getDescription());
         ps.setBoolean(i++, product.getFlSkl());
-        
+
         ps.execute();
         ps.close();
     }
@@ -147,7 +143,7 @@ public class ProductDao {
 
     public int modifyProduct(Product product) throws SQLException {
         Connection con = connectionFactory.getDefaultConnection();
-        PreparedStatement ps = con.prepareStatement("update Product set (PROD_NAME = ?, PROD_PRICE = ?, PROD_DESCR =  ?, PROD_FLSKL = ? where PROD_ACC = ? ");
+        PreparedStatement ps = con.prepareStatement("update Product set PROD_NAME = ?, PROD_PRICE = ?, PROD_DESCR =  ?, PROD_FLSKL = ? where PROD_ACC = ? ");
         int i = 1;
         ps.setString(i++, product.getName());
         ps.setBigDecimal(i++, product.getPrice());
@@ -158,7 +154,8 @@ public class ProductDao {
         ps.close();
         return ret;
     }
-    public int deleteProduct(int productId) throws SQLException{
+
+    public int deleteProduct(int productId) throws SQLException {
         Connection con = connectionFactory.getDefaultConnection();
         PreparedStatement ps = con.prepareStatement("delete Product where PROD_ACC = ? ");
         int i = 1;
@@ -166,19 +163,6 @@ public class ProductDao {
         int ret = ps.executeUpdate();
         ps.close();
         return ret;
-    }
-    
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        MyConnectionFactory conFac = new MyConnectionFactory();
-        ProductDao productDao = new ProductDao();
-        Product list = productDao.getProductInfo(1111111);
-        list.setId(121212);
-        productDao.deleteProduct(121212);
-        productDao.addProduct(list);
-        list = productDao.getProductInfo(121212);
-        System.out.println(list);
-        list = productDao.getProductInfo(1111111);
-        System.out.println(list);
     }
 
 }

@@ -1,21 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package diplomdaoandbusiness.swingClient.frame;
-
 
 import diplomdaoandbusiness.beans.entities.Product;
 import diplomdaoandbusiness.dao.ProductDao;
-import diplomdaoandbusiness.services.IProductServices;
 import diplomdaoandbusiness.swingClient.AppConfig;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +31,14 @@ public class ProductEdit extends JDialog {
     private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ProductEdit.class);
     private JLabel nameLabel = new JLabel("Наименование", SwingConstants.LEFT);
     private JTextField nameField = new JTextField();
+    private JLabel nameLabel1 = new JLabel("id производителя", SwingConstants.LEFT);
+    private JTextField nameField1 = new JTextField();
+    private JLabel nameLabel2 = new JLabel("id категории", SwingConstants.LEFT);
+    private JTextField nameField2 = new JTextField();
+    private JLabel nameLabel3 = new JLabel("Цена", SwingConstants.LEFT);
+    private JTextField nameField3 = new JTextField();
+    private JLabel nameLabel4 = new JLabel("Описание", SwingConstants.LEFT);
+    private JTextField nameField4 = new JTextField();
     private Product product = null;
     private boolean saved = false;
     ProductDao productDao = new ProductDao();
@@ -51,18 +52,18 @@ public class ProductEdit extends JDialog {
 
     public ProductEdit(final Product prod) throws SQLException {
         super(AppConfig.getMainFrame(), true);
-        product = productDao.getProductInfo(prod.getId());
-//        AppConfig.doJob(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(ProductEdit.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-        String caption = "Редактирование товара [" + product.getId() + "] " + product.getName();
+        
+        AppConfig.doJob(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    product = productDao.getProductInfo(prod.getId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProductEdit.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        String caption = "Редактирование товара [" + prod.getId() + "] " + prod.getName();
         init(caption);
     }
 
@@ -80,9 +81,21 @@ public class ProductEdit extends JDialog {
         c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
         c.add(nameLabel);
         c.add(nameField);
+        c.add(nameLabel1);
+        c.add(nameField1);
+        c.add(nameLabel2);
+        c.add(nameField2);
+        c.add(nameLabel3);
+        c.add(nameField3);
+        c.add(nameLabel4);
+        c.add(nameField4);
 
         if (product != null) {
             nameField.setText(product.getName());
+            nameField1.setText(String.valueOf(product.getIdManuf()));
+            nameField2.setText(String.valueOf(product.getIdCateg()));
+            nameField3.setText(String.valueOf(product.getPrice()));
+            nameField4.setText(product.getDescription());
             System.out.println("" + product);
 
         }
@@ -107,6 +120,10 @@ public class ProductEdit extends JDialog {
                                 p = new Product();
                             }
                             p.setName(nameField.getText());
+                            p.setIdManuf(Integer.parseInt(nameField1.getText()));
+                            p.setIdCateg(Integer.parseInt(nameField2.getText()));
+                            p.setPrice(new BigDecimal(nameField3.getText()));
+                            p.setDescription(nameField4.getText());
                             if (product == null) {
                                 productDao.addProduct(p);
                             } else {
@@ -139,5 +156,3 @@ public class ProductEdit extends JDialog {
         return saved;
     }
 }
-
-

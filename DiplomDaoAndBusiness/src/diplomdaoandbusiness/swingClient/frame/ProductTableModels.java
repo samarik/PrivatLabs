@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package diplomdaoandbusiness.swingClient.frame;
 
-import diplomdaoandbusiness.beans.entities.Category;
 import diplomdaoandbusiness.beans.entities.Product;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.TableModelEvent;
@@ -21,8 +15,8 @@ import javax.swing.table.TableModel;
 class ProductTableModels implements TableModel {
 
     private List<Product> list = new ArrayList<>();
-    private final String[] columnNames = new String[]{"id", "Наименование"};
-    private final Class[] columnClasses = new Class[]{Integer.class, String.class};
+    private final String[] columnNames = new String[]{"id","id производителя","id категории","Наименование","Цена","Описание"};
+    private final Class[] columnClasses = new Class[]{Integer.class,Integer.class,Integer.class, String.class, BigDecimal.class, String.class};
     private final List<TableModelListener> listeners = new ArrayList<>();
 
       @Override
@@ -32,7 +26,7 @@ class ProductTableModels implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 6;
     }
 
     @Override
@@ -55,8 +49,16 @@ class ProductTableModels implements TableModel {
         Product p = list.get(rowIndex);
         if(columnIndex==0){
             return p.getId();
-        } else{
+        } if(columnIndex==1){
+            return p.getIdManuf();
+        }if(columnIndex==2){
+            return p.getIdCateg();
+        } if(columnIndex==3){
             return p.getName();
+        }if(columnIndex==4){
+            return p.getPrice();
+        }else{
+            return p.getDescription();
         }
     }
 
@@ -65,8 +67,16 @@ class ProductTableModels implements TableModel {
         Product p = list.get(rowIndex);
         if(columnIndex==0){
             p.setId((Integer)aValue);
-        } else{
+        } if(columnIndex==1){
+            p.setIdManuf((Integer)aValue);
+        }if(columnIndex==2){
+            p.setIdCateg((Integer)aValue);
+        }if(columnIndex==3){
             p.setName((String)aValue);
+        }if(columnIndex==4){
+            p.setPrice((BigDecimal)aValue);
+        }else{
+            p.setDescription((String)aValue);
         }
         fireModelChanged(null);
     }

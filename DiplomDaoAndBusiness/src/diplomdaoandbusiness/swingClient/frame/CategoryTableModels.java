@@ -20,8 +20,8 @@ import javax.swing.table.TableModel;
 public class CategoryTableModels implements TableModel {
 
     private final List<Category> list = new ArrayList<>();
-    private final String[] columnNames = new String[]{"id", "Наименование"};
-    private final Class[] columnClasses = new Class[]{Integer.class, String.class};
+    private final String[] columnNames = new String[]{"id", "id родителя", "Наименование", "Описание"};
+    private final Class[] columnClasses = new Class[]{Integer.class, Integer.class, String.class, String.class};
     private final List<TableModelListener> listeners = new ArrayList<>();
 
     @Override
@@ -31,7 +31,7 @@ public class CategoryTableModels implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -52,60 +52,72 @@ public class CategoryTableModels implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Category c = list.get(rowIndex);
-        if(columnIndex==0){
+        if (columnIndex == 0) {
             return c.getId();
-        } else{
+        }
+        if (columnIndex == 1) {
+            return c.getIdParent();
+        }
+        if (columnIndex == 2) {
             return c.getName();
+        } else {
+            return c.getDescription();
         }
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Category c = list.get(rowIndex);
-        if(columnIndex==0){
-            c.setId((Integer)aValue);
-        } else{
-            c.setName((String)aValue);
+        if (columnIndex == 0) {
+            c.setId((Integer) aValue);
+        }
+        if (columnIndex == 1) {
+            c.setIdParent((Integer) aValue);
+        }
+        if (columnIndex == 2) {
+            c.setName((String) aValue);
+        } else {
+            c.setDescription((String) aValue);
         }
         fireModelChanged(null);
     }
-    
-    public void deleteManufacturer(int rowIndex){
+
+    public void deleteCategory(int rowIndex) {
         list.remove(list.get(rowIndex));
         fireModelChanged(null);
     }
-    
-    public void addManufacturer(Category c){
+
+    public void addCategory(Category c) {
         list.add(c);
         fireModelChanged(null);
     }
-    
-    public void setManufacturer(int rowIndex, Category c){
+
+    public void setCategory(int rowIndex, Category c) {
         list.set(rowIndex, c);
         fireModelChanged(null);
     }
-    
-    public void setManufacturerList(List<Category> list){
+
+    public void setCategoryList(List<Category> list) {
         clearCategoryList();
         this.list.addAll(list);
         fireModelChanged(null);
     }
-    
-    public void clearCategoryList(){
+
+    public void clearCategoryList() {
         this.list.clear();
         fireModelChanged(null);
     }
-    
-    public Category getCategory(int rowIndex){
+
+    public Category getCategory(int rowIndex) {
         return list.get(rowIndex);
     }
-    
-    private void fireModelChanged(TableModelEvent e){
-        for(TableModelListener l : listeners){
+
+    private void fireModelChanged(TableModelEvent e) {
+        for (TableModelListener l : listeners) {
             l.tableChanged(e);
         }
     }
-    
+
     @Override
     public void addTableModelListener(TableModelListener l) {
         listeners.add(l);

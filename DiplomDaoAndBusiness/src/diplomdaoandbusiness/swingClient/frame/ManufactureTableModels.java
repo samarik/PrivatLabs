@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package diplomdaoandbusiness.swingClient.frame;
 
 import diplomdaoandbusiness.beans.entities.Manufacturer;
@@ -23,7 +18,7 @@ public class ManufactureTableModels implements TableModel {
     private final Class[] columnClasses = new Class[]{Integer.class, String.class};
     private final List<TableModelListener> listeners = new ArrayList<>();
 
-       @Override
+    @Override
     public int getRowCount() {
         return list.size();
     }
@@ -51,9 +46,9 @@ public class ManufactureTableModels implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Manufacturer m = list.get(rowIndex);
-        if(columnIndex==0){
+        if (columnIndex == 0) {
             return m.getId();
-        } else{
+        } else {
             return m.getName();
         }
     }
@@ -61,50 +56,51 @@ public class ManufactureTableModels implements TableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Manufacturer m = list.get(rowIndex);
-        if(columnIndex==0){
-            m.setId((Integer)aValue);
-        } else{
-            m.setName((String)aValue);
+        if (columnIndex == 0) {
+            m.setId((Integer) aValue);
+        } else {
+            m.setName((String) aValue);
         }
         fireModelChanged(null);
     }
-    
-    public void deleteManufacturer(int rowIndex){
+
+    public void deleteManufacturer(int rowIndex) {
         list.remove(list.get(rowIndex));
         fireModelChanged(null);
     }
-    
-    public void addManufacturer(Manufacturer m){
+
+    public void addManufacturer(Manufacturer m) {
         list.add(m);
         fireModelChanged(null);
     }
-    
-    public void setManufacturer(int rowIndex, Manufacturer m){
+
+    public void setManufacturer(int rowIndex, Manufacturer m) {
+        System.out.println(m);
         list.set(rowIndex, m);
         fireModelChanged(null);
     }
-    
-    public void setManufacturerList(List<Manufacturer> list){
+
+    public void setManufacturerList(List<Manufacturer> list) {
         clearManufacturerList();
         this.list.addAll(list);
         fireModelChanged(null);
     }
-    
-    public void clearManufacturerList(){
+
+    public void clearManufacturerList() {
         this.list.clear();
         fireModelChanged(null);
     }
-    
-    public Manufacturer getManufacturer(int rowIndex){
+
+    public Manufacturer getManufacturer(int rowIndex) {
         return list.get(rowIndex);
     }
-    
-    private void fireModelChanged(TableModelEvent e){
-        for(TableModelListener l : listeners){
+
+    private void fireModelChanged(TableModelEvent e) {
+        for (TableModelListener l : listeners) {
             l.tableChanged(e);
         }
     }
-    
+
     @Override
     public void addTableModelListener(TableModelListener l) {
         listeners.add(l);

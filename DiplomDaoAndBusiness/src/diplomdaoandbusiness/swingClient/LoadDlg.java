@@ -17,14 +17,12 @@ import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
-
 public class LoadDlg extends JDialog {
 
     //private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ManufacturerDialog.class);
     private JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Thread currentThread;
-    
 
     public LoadDlg(Window owner) {
         super(owner, "Загрузка...", ModalityType.DOCUMENT_MODAL);
@@ -36,14 +34,13 @@ public class LoadDlg extends JDialog {
         this.pack();
     }
 
-
     public void doJob(Runnable job) {
         Thread t = new Thread(job);
         currentThread = t;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if(currentThread!=null && currentThread.isAlive()){
+                if (currentThread != null && currentThread.isAlive()) {
                     setLocationRelativeTo(AppConfig.getMainFrame());
                     setVisible(true);
                 }
@@ -52,16 +49,15 @@ public class LoadDlg extends JDialog {
         t.start();
         new Thread(new CloseOperation(t)).start();
     }
-    
-    class CloseOperation implements Runnable{
-        
+
+    class CloseOperation implements Runnable {
+
         private Thread t;
 
         public CloseOperation(Thread t) {
             this.t = t;
         }
-        
-        
+
         @Override
         public void run() {
             try {
@@ -84,21 +80,4 @@ public class LoadDlg extends JDialog {
         executor.shutdown();
     }
 
-    public static void main(String[] args) {
-        LoadDlg loadDlg = new LoadDlg(null);
-        loadDlg.doJob(new Runnable() {
-            @Override
-            public void run(){
-                try {
-                    System.out.println("test");
-                    Thread.sleep(2000);
-                    System.out.println("test2");
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(LoadDlg.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            }
-        });
-        loadDlg.dispose();
-    }
 }

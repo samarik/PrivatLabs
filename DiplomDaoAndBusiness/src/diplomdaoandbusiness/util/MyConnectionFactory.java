@@ -17,20 +17,17 @@ public class MyConnectionFactory implements IConnectionFactory {
 
     private DataSource ds = null;
 
-    public MyConnectionFactory(){
+    public MyConnectionFactory() {
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MyConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory("jdbc:jtds:sybase://127.0.0.1:5000:mydb0", "sa", "");
+        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory("jdbc:jtds:sybase://127.0.0.1:5000/mydb0", "sa", "");
         PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
         ObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory);
         poolableConnectionFactory.setPool(connectionPool);
         PoolingDataSource<PoolableConnection> dataSource = new PoolingDataSource<>(connectionPool);
-        //return dataSource;
-        //ds.setCreateDatabase("create");
-        //.setDatabaseName("db");
         this.ds = dataSource;
     }
 

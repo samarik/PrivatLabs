@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package diplomdaoandbusiness.swingClient.frame;
 
 import diplomdaoandbusiness.beans.entities.Manufacturer;
-import diplomdaoandbusiness.services.IManufacturerServices;
+import diplomdaoandbusiness.dao.ManufacturerDao;
 import diplomdaoandbusiness.swingClient.AppConfig;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -30,6 +26,7 @@ public class ManufacturerEdit extends JDialog {
     private JTextField nameField = new JTextField();
     private Manufacturer manufacturer = null;
     private boolean saved = false;
+    ManufacturerDao manufacturerDao = new ManufacturerDao();
 
     public ManufacturerEdit() {
         super(AppConfig.getMainFrame(), true);
@@ -38,14 +35,20 @@ public class ManufacturerEdit extends JDialog {
 
     }
 
-    public ManufacturerEdit(Manufacturer manufacturer) {
+   public ManufacturerEdit(final Manufacturer manuf) throws SQLException {
         super(AppConfig.getMainFrame(), true);
-        AppConfig.doJob(new Runnable() {
-            @Override
-            public void run() {
-                //manufacturer = manufacturerService.getInfo(manufacturer.getId());
-            }
-        });
+        manufacturer = manufacturerDao.getManufacturerInfo(manuf.getId());
+        //System.out.println(manufacturer);
+        //AppConfig.doJob(new Runnable() {
+           // @Override
+          // public void run() {
+          //      try {
+           //        manufacturer = manufacturerDao.getManufacturerInfo(manuf.getId()); 
+           //     } catch (SQLException ex) {
+           //         Logger.getLogger(ProductEdit.class.getName()).log(Level.SEVERE, null, ex);
+            //    }
+          // }
+        //});
         String caption = "Редактирование предприятия [" + manufacturer.getId() + "] " + manufacturer.getName();
         init(caption);
     }
@@ -92,10 +95,12 @@ public class ManufacturerEdit extends JDialog {
                             }
                             m.setName(nameField.getText());
                             if (manufacturer == null) {
-//                                manufacturerService.add(m);
-                            } else {
+                            manufacturerDao.addManufacturer(m);
+                            }else {
+                            manufacturerDao.modifyManufacturer(m);   
                             }
                             manufacturer = m;
+                            System.out.println(m);
                             saved = true;
                             JOptionPane.showMessageDialog(ManufacturerEdit.this, "Сохранено", "Информация", JOptionPane.INFORMATION_MESSAGE);
                             ManufacturerEdit.this.dispose();

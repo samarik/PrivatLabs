@@ -18,7 +18,8 @@ public class CategoryDao {
 
     private IConnectionFactory connectionFactory = DaoConfig.getConnectionFactory();
 
-    public List<Category> list(Connection con) throws SQLException {
+    public List<Category> list() throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
         List<Category> list = new ArrayList<>();
         PreparedStatement ps = con.prepareStatement("select CATEG_ACC, Cat_CATEG_ACC, CATEG_NAME, CATEG_DESCR from Category order by CATEG_ACC");
         ResultSet rs = ps.executeQuery();
@@ -35,7 +36,9 @@ public class CategoryDao {
         return list;
     }
 
-    public int getNextId(Connection con) throws SQLException {
+    public int getNextId() throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
+
         PreparedStatement ps = con.prepareStatement("select max(CATEG_ACC) from Category");
         ResultSet rs = ps.executeQuery();
         int ret = 0;
@@ -43,15 +46,27 @@ public class CategoryDao {
             ret = rs.getInt(1) + 1;
         }
         rs.close();
+        //CallableStatement call = con.prepareCall("{call GenId (?,?,?)}");
+        //call.setString(1, "C");
+        //call.setInt(2, 1);
+        //call.setInt(3, 0);
+        //ResultSet r = call.executeQuery();
+        //while (r.next()) {
+        //  System.out.println("---------------------------------------");
+        // System.out.println("Идентификатор " + r.getString(ret));
+        //r.close();
+        //call.close();
+
         return ret;
     }
 
-    public void addCategory(Connection con, Category category) throws SQLException {
-
+    public void addCategory(Category category) throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
         PreparedStatement ps = con.prepareStatement("insert into Category(CATEG_ACC, Cat_CATEG_ACC , CATEG_NAME, CATEG_DESCR) values(?,?,?,?)");
         int i = 1;
+        category.setId(getNextId());
         ps.setInt(i++, category.getId());
-        ps.setInt(i++, category.getIdParent());
+        ps.setInt(i++, 10);
         ps.setString(i++, category.getName());
         ps.setString(i++, category.getDescription());
         ps.execute();
@@ -101,6 +116,47 @@ public class CategoryDao {
             ret.add(rs.getInt(1));
         }
         rs.close();
+        ps.close();
+        return ret;
+    }
+
+    public int deleteCategory(int categoryId) throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
+        PreparedStatement ps = con.prepareStatement("delete Category where CATEG_ACC  = ? ");
+        int i = 1;
+        ps.setInt(i++, categoryId);
+        int ret = ps.executeUpdate();
+        ps.close();
+        return ret;
+    }
+
+    public Category getCategoryInfo(int categoryId) throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
+        PreparedStatement ps = con.prepareStatement("Select CATEG_NAME, CATEG_DESCR From Category where CATEG_ACC = ?");
+        ps.setInt(1, categoryId);
+        ResultSet rs = ps.executeQuery();
+        Category ret = null;
+        if (rs.next()) {
+            ret = new Category();
+            ret.setId(categoryId);
+            ret.setName(rs.getString("CATEG_NAME"));
+            ret.setDescription(rs.getString("CATEG_DESCR"));
+
+        }
+
+        rs.close();
+        ps.close();
+        return ret;
+    }
+
+    public int modifyCategory(Category category) throws SQLException {
+        Connection con = connectionFactory.getDefaultConnection();
+        PreparedStatement ps = con.prepareStatement("update Category set CATEG_NAME = ?, CATEG_DESCR = ? where CATEG_ACC = ? ");
+        int i = 1;
+        ps.setString(i++, category.getName());
+        ps.setString(i++, category.getDescription());
+        ps.setInt(i++, category.getId());
+        int ret = ps.executeUpdate();
         ps.close();
         return ret;
     }

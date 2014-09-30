@@ -1,11 +1,9 @@
-
 package diplomdaoandbusiness.swingClient;
 
 import java.util.Map;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
 
 public class CommonInternalFrameListener extends InternalFrameAdapter {
 

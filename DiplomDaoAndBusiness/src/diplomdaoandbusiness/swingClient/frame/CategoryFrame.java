@@ -1,17 +1,12 @@
 package diplomdaoandbusiness.swingClient.frame;
 
-
 import diplomdaoandbusiness.beans.entities.Category;
-import diplomdaoandbusiness.services.ICategoryServices;
+import diplomdaoandbusiness.dao.CategoryDao;
 import diplomdaoandbusiness.swingClient.AppConfig;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -28,6 +23,7 @@ public class CategoryFrame extends JInternalFrame {
     private CategoryTableModels model = new CategoryTableModels();
     private JTable table = new JTable(model);
     private JToolBar toolBar = new JToolBar();
+    private CategoryDao categoryDao = new CategoryDao();
 
     public CategoryFrame() {
         super("Управление справочником категории", true, true, true, true);
@@ -42,7 +38,7 @@ public class CategoryFrame extends JInternalFrame {
                     @Override
                     public void run() {
                         try {
-                            //model.setCategoryList(categoryService.list());
+                            model.setCategoryList(categoryDao.list());
                         } catch (Throwable t) {
                             JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                             LOGGER.error(null, t);
@@ -55,12 +51,11 @@ public class CategoryFrame extends JInternalFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 CategoryEdit categoryEdit = new CategoryEdit();
                 categoryEdit.setVisible(true);
                 if (categoryEdit.isSaved()) {
                     try {
-                        //model.addCategory(categoryEdit.getCategory());
+                        model.addCategory(categoryEdit.getCategory());
                     } catch (Throwable t) {
                         JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR);
                         LOGGER.error(null, t);
@@ -78,12 +73,12 @@ public class CategoryFrame extends JInternalFrame {
                             JOptionPane.showMessageDialog(AppConfig.getMainFrame(), "Не выбрана запись", "Внимание!!!", JOptionPane.WARNING_MESSAGE);
                         }
                         try {
-                           Category category = model.getCategory(table.getSelectedRow());
+                            Category category = model.getCategory(table.getSelectedRow());
 
                             CategoryEdit categoryEdit = new CategoryEdit(category);
                             categoryEdit.setVisible(true);
                             if (categoryEdit.isSaved()) {
-                                //model.setCategory(table.getSelectedRow(), categoryEdit.getCategory());
+                                model.setCategory(table.getSelectedRow(), categoryEdit.getCategory());
                             }
                         } catch (Throwable t) {
                             JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -108,8 +103,8 @@ public class CategoryFrame extends JInternalFrame {
                                 public void run() {
                                     Category category = model.getCategory(table.getSelectedRow());
                                     try {
-                                        //categoryService.delete(category.getId());
-                                        //model.deleteCategory(table.getSelectedRow());
+                                        categoryDao.deleteCategory(category.getId());
+                                        model.deleteCategory(table.getSelectedRow());
                                     } catch (Throwable t) {
                                         JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                                         LOGGER.error(null, t);

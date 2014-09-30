@@ -2,16 +2,11 @@ package diplomdaoandbusiness.swingClient.frame;
 
 import diplomdaoandbusiness.beans.entities.Manufacturer;
 import diplomdaoandbusiness.dao.ManufacturerDao;
-import diplomdaoandbusiness.services.IManufacturerServices;
 import diplomdaoandbusiness.swingClient.AppConfig;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -28,7 +23,7 @@ public class ManufacturerFrame extends JInternalFrame {
     private JTable table = new JTable(model);
     private JToolBar toolBar = new JToolBar();
     private ManufacturerDao manufacturerDao = new ManufacturerDao();
-    
+
     public ManufacturerFrame() {
         super("Управление справочником производители", true, true, true, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -42,7 +37,7 @@ public class ManufacturerFrame extends JInternalFrame {
                     @Override
                     public void run() {
                         try {
-//                            model.setManufacturerList(manufacturerDao.list(null));
+                            model.setManufacturerList(manufacturerDao.list());
                         } catch (Throwable t) {
                             JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                             LOGGER.error(null, t);
@@ -79,11 +74,10 @@ public class ManufacturerFrame extends JInternalFrame {
                         }
                         try {
                             Manufacturer manufacturer = model.getManufacturer(table.getSelectedRow());
-
-                            ManufacturerEdit userEdit = new ManufacturerEdit(manufacturer);
-                            userEdit.setVisible(true);
-                            if (userEdit.isSaved()) {
-                                model.setManufacturer(table.getSelectedRow(), userEdit.getManufacturer());
+                            ManufacturerEdit manufacturerEdit = new ManufacturerEdit(manufacturer);
+                            manufacturerEdit.setVisible(true);
+                            if (manufacturerEdit.isSaved()) {
+                                model.setManufacturer(table.getSelectedRow(), manufacturerEdit.getManufacturer());
                             }
                         } catch (Throwable t) {
                             JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -108,8 +102,8 @@ public class ManufacturerFrame extends JInternalFrame {
                                 public void run() {
                                     Manufacturer manufacturer = model.getManufacturer(table.getSelectedRow());
                                     try {
-//                                        manufacturerService.delete(manufacturer.getId());
-                                        //model.deleteManufacturer(table.getSelectedRow());
+                                        manufacturerDao.deleteManufacturer(manufacturer.getId());
+                                        model.deleteManufacturer(table.getSelectedRow());
                                     } catch (Throwable t) {
                                         JOptionPane.showMessageDialog(AppConfig.getMainFrame(), t.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                                         LOGGER.error(null, t);
